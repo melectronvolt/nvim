@@ -4,10 +4,8 @@ vim.opt.relativenumber = true
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
--- Même config en local et en SSH :
--- - local Wayland/X11 : Neovim utilise le provider système, par exemple wl-copy/wl-paste.
--- - SSH : Neovim utilise OSC52 pour copier depuis la machine distante vers le presse-papier local.
 local is_ssh = vim.env.SSH_CONNECTION ~= nil or vim.env.SSH_TTY ~= nil
+local has_gui_clipboard = vim.env.WAYLAND_DISPLAY ~= nil or vim.env.DISPLAY ~= nil
 
 if is_ssh then
   local ok, osc52 = pcall(require, "vim.ui.clipboard.osc52")
@@ -27,10 +25,11 @@ if is_ssh then
 
     vim.opt.clipboard = "unnamedplus"
   else
-    -- Fallback prudent si le provider OSC52 n'existe pas.
     vim.opt.clipboard = ""
   end
-else
-  -- Local : laisse Neovim utiliser wl-copy/wl-paste, xclip, xsel, etc.
+elseif has_gui_clipboard then
   vim.opt.clipboard = "unnamedplus"
+else
+  -- Serveur en TTY local, sans X/Wayland : pas de provider clipboard.
+  vim.opt.clipboard = ""
 end
