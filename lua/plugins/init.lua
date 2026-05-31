@@ -1,5 +1,22 @@
 return {
   -- Configuration du formatage (Conform)
+{
+  "jvgrootveld/telescope-zoxide",
+  dependencies = {
+    "nvim-telescope/telescope.nvim",
+  },
+  keys = {
+    {
+      "<leader>fz",
+      "<cmd>Telescope zoxide list<CR>",
+      desc = "Telescope zoxide directories",
+    },
+  },
+  config = function()
+    require("telescope").load_extension("zoxide")
+  end,
+},
+
   {
     "stevearc/conform.nvim",
     event = 'BufWritePre', -- Déclenche le formatage à chaque sauvegarde
