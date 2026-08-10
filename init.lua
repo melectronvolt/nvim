@@ -39,6 +39,13 @@ end
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 
+-- Use terminal clipboard when running as the dev user.
+-- dev is typically reached through sudo from remi and does not own
+-- the graphical Wayland/X11 session.
+if vim.env.USER == "dev" then
+  vim.g.clipboard = "osc52"
+end
+
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
