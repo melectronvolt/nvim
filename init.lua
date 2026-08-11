@@ -38,6 +38,9 @@ end
 
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.opt.breakindent = true
 
 -- Use terminal clipboard when running as the dev user.
 -- dev is typically reached through sudo from remi and does not own
