@@ -1,3 +1,8 @@
+local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+
+if not vim.env.PATH:find(mason_bin, 1, true) then
+  vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+end
 return {
   -- Configuration du formatage (Conform)
 {
@@ -17,20 +22,15 @@ return {
   end,
 },
 
-  {
-    "stevearc/conform.nvim",
-    event = 'BufWritePre', -- Déclenche le formatage à chaque sauvegarde
-    config = function()
-      local options = require("configs.conform")
+{
+  "stevearc/conform.nvim",
+  event = { "BufWritePre" },
+  cmd = { "ConformInfo" },
 
-      -- 2. ON L'INJECTE VRAIMENT DANS LE PLUGIN (C'est ce qui manquait !)
-      require("conform").setup(options)
-      vim.keymap.set("n", "<leader>fm", function()
-        require("conform").format({ lsp_fallback = true })
-      end, { desc = "Formater avec Conform" })
-      --require "configs.conform"
-    end,
-  },
+  opts = function()
+    return require("configs.conform")
+  end,
+},
 
   -- 1. Coloration Syntaxique (Treesitter)
   {
@@ -53,6 +53,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = {
+      PATH = "prepend",
       ensure_installed = {
         -- Base NvChad
         "lua-language-server", "stylua",
