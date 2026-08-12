@@ -1,5 +1,6 @@
 local options = {
   formatters_by_ft = {
+    -- Lua
     lua = { "stylua" },
 
     -- Web & UI
@@ -9,40 +10,55 @@ local options = {
     html = { "prettier" },
     css = { "prettier" },
 
-    -- Formats de configuration & Docs
+    -- Formats de configuration & documentation
     json = { "prettier" },
     yaml = { "prettier" },
-    markdown = { "prettier", "markdownlint" },
+    markdown = { "prettier" },
     toml = { "taplo" },
-    -- XML est géré nativement par le LSP Lemminx (lsp_fallback s'en chargera)
 
     -- Python & Django
-    python = { "black" },      -- Black s'occupe de la mise en page (Mypy et Ruff tournent en fond)
-    htmldjango = { "djlint" }, -- Le meilleur formateur pour les templates HTML avec des balises {% %}
+    python = { "black" },
+    htmldjango = { "djlint" },
 
-    -- Langages lourds & Scripts
+    -- C / C++
     c = { "clang-format" },
     cpp = { "clang-format" },
+
+    -- Shell
     sh = { "shfmt" },
+
+    -- LaTeX
     tex = { "latexindent" },
 
-    -- Pour Go, Rust et Assembly, le lsp_fallback gère tout parfaitement.
+    -- Go / Rust
+    go = { "gofmt" },
+    rust = { "rustfmt" },
   },
 
-  -- 2. ON INJECTE TES PARAMÈTRES PERSONNELS ICI
+  -- Paramètres par défaut utilisés par conform.format()
+  default_format_opts = {
+    lsp_format = "fallback",
+  },
+
+  -- Configuration spécifique de certains formatters
   formatters = {
     latexindent = {
-      -- Conform ajoutera le nom du fichier automatiquement à la fin
       prepend_args = { "--cruft=/tmp" },
     },
   },
 
-  -- 3. (Optionnel) Formatage automatique à la sauvegarde
+  -- Formatage automatique à chaque sauvegarde
   format_on_save = {
-    timeout_ms = 1000,
-    lsp_fallback = true,
+    timeout_ms = 2000,
+    lsp_format = "fallback",
   },
 
+  -- Afficher les erreurs de formatage
+  notify_on_error = true,
+
+  -- Très utile pendant la mise au point :
+  -- avertit si aucun formatter n'est disponible
+  notify_no_formatters = true,
 }
 
 return options
