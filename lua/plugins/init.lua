@@ -90,11 +90,7 @@ return {
     lazy = false, -- Indispensable pour que LaTeX charge correctement
     init = function()
       -- 1. Utiliser Zathura pour afficher le PDF
-if vim.env.WAYLAND_DISPLAY ~= nil or vim.env.DISPLAY ~= nil then
-  vim.g.vimtex_view_method = 'zathura_simple'
-else
-  vim.g.vimtex_view_method = ''
-end
+      vim.g.vimtex_view_method = 'zathura'
       -- 2. Configurer la compilation avec LuaLaTeX
       vim.g.vimtex_compiler_latexmk = {
         executable = 'latexmk',
